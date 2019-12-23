@@ -4,15 +4,13 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.util.AttributeSet
-import android.util.DisplayMetrics
-import android.util.TypedValue
 import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import io.abdelraoufsabri.learn.ruler.ObservableHorizontalScrollView
 import io.abdelraoufsabri.learn.ruler.R
 import kotlinx.android.synthetic.main.units.view.*
@@ -220,7 +218,7 @@ class ScrollingValuePicker : LinearLayout {
 
     private fun getPointer(): View {
         val pointer = ImageView(context)
-        val shape = getDrawable(context, R.drawable.pointer_line) as Drawable
+        val shape = ContextCompat.getDrawable(context, R.drawable.pointer_line) as Drawable
 
         pointer.setImageDrawable(shape)
         val params = LayoutParams(
@@ -331,48 +329,4 @@ class ScrollingValuePicker : LinearLayout {
         return (this * scale).toInt()
     }
 
-    private val sLock = Any()
-    private var sTempValue: TypedValue? = null
-    private fun getDrawable(context: Context, id: Int): Drawable? {
-        when {
-            Build.VERSION.SDK_INT >= 21 -> return context.getDrawable(id)
-            Build.VERSION.SDK_INT >= 16 -> return context.resources.getDrawable(id)
-            else -> {
-                val var3 = sLock
-                var resolvedId: Int = 0
-                synchronized(sLock) {
-                    if (sTempValue == null) {
-                        sTempValue = TypedValue()
-                    }
-
-                    context.resources.getValue(id, sTempValue, true)
-                    resolvedId = sTempValue!!.resourceId
-                }
-
-                return context.resources.getDrawable(resolvedId)
-            }
-        }
-    }
-
-    /**
-     * This method converts dp unit to equivalent pixels, depending on device density.
-     *
-     * @param dp A value in dp (density independent pixels) unit. Which we need to convert into pixels
-     * @param context Context to get resources and device specific display metrics
-     * @return A float value to represent px equivalent to dp depending on device density
-     */
-    fun convertDpToPixel(dp: Float, context: Context): Float {
-        return dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-    }
-
-    /**
-     * This method converts device specific pixels to density independent pixels.
-     *
-     * @param px A value in px (pixels) unit. Which we need to convert into db
-     * @param context Context to get resources and device specific display metrics
-     * @return A float value to represent dp equivalent to px value
-     */
-    fun convertPixelsToDp(px: Float, context: Context): Float {
-        return px / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-    }
 }
