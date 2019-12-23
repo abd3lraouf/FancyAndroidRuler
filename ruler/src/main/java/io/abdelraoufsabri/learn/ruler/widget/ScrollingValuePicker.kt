@@ -202,15 +202,21 @@ class ScrollingValuePicker : LinearLayout {
         }
 
         when (defaultPosition) {
-            DefaultPosition.BEGINNING -> scrollTo(step.toFloat())
-            DefaultPosition.MIDDLE -> scrollTo(((rulerMaxValue - rulerMinValue) / 2F + 1) * step)
-            DefaultPosition.END -> scrollTo(rulerMaxValue * step.toFloat())
+            DefaultPosition.BEGINNING -> scrollTo(startPosition())
+            DefaultPosition.MIDDLE -> scrollTo(middlePosition())
+            DefaultPosition.END -> scrollTo(endPosition())
         }
         // Create the left and right spacers, don't worry about their dimensions, yet.
 
         container.addView(mLeftSpacer, 0)
         container.addView(mRightSpacer)
     }
+
+    private fun startPosition() = step.toFloat()
+
+    private fun middlePosition() = ((rulerMaxValue - rulerMinValue) / 2F + 1) * step
+
+    private fun endPosition() = (rulerMaxValue - rulerMinValue + 1) * startPosition()
 
     private fun getPointer(): View {
         val pointer = ImageView(context)
@@ -278,10 +284,11 @@ class ScrollingValuePicker : LinearLayout {
 
         val correctedX = finalizeValue(value)
 
-        if (value < rulerMinValue)
-            scrollTo(step.toFloat())
-        else
-            scrollTo(correctedX.toFloat())
+        when {
+            underScrolled(value) -> scrollTo(startPosition())
+            overScrolled(value) -> scrollTo(endPosition())
+            else -> scrollTo(correctedX.toFloat())
+        }
 
         if (valueChanged(value) && firstLaunchSkipped) {
             playTickSound(value)
@@ -292,6 +299,11 @@ class ScrollingValuePicker : LinearLayout {
 
         return value
     }
+
+
+    private fun overScrolled(value: Int) = value > rulerMaxValue
+
+    private fun underScrolled(value: Int) = value < rulerMinValue
 
     private fun playTickSound(value: Int) {
         val soundPlayTimes = 8
