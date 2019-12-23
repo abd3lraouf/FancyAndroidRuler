@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main_unit_bar_color">#99000000</color>
+    <color name="main_unit_text_color">#E6000000</color>
+    <color name="middle_unit_bar_color">#80000000</color>
+    <color name="middle_unit_text_color">#99000000</color>
+    <color name="unit_bar_color">#B8B2B2</color>
+</resources>

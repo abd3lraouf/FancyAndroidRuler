@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/value_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="32sp"
+        tools:text="1" />
+
+    <io.abdelraoufsabri.learn.ruler.widget.ScrollingValuePicker
+        android:id="@+id/myScrollingValuePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:rulerAccentColor="#000"
+        app:rulerBackgroundColor="#fff"
+        app:rulerDigits="ten"
+        app:rulerMaxValue="200"
+        app:rulerMinValue="100"
+        app:rulerPlaceValue="tens"
+        app:defaultPosition="middle"
+        app:rulerPointerThickness="2"
+        app:rulerPointerBackgroundColor="#FFFFFF"
+        app:rulerPointerOutlineColor="#eaebec"
+        app:rulerPrimaryColor="#eaebec" />
+
+</LinearLayout>

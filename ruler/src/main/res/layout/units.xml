@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <View
+        android:id="@+id/bar0"
+        android:layout_width="2dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="@dimen/bar_spacing"
+        android:background="@color/main_unit_bar_color"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/main_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/bar0"
+        app:layout_constraintRight_toRightOf="@id/bar0"
+        app:layout_constraintTop_toBottomOf="@id/bar0"
+        tools:text="0" />
+
+    <View
+        android:id="@+id/bar1"
+        android:layout_width="2dp"
+        android:layout_height="@dimen/normal_bar_height"
+        android:layout_marginLeft="@dimen/bar_spacing"
+        android:background="@color/unit_bar_color"
+        app:layout_constraintLeft_toRightOf="@id/bar0"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
+    <View
+        android:id="@+id/bar2"
+        android:layout_width="2dp"
+        android:layout_height="@dimen/normal_bar_height"
+        android:layout_marginLeft="@dimen/bar_spacing"
+        android:background="@color/unit_bar_color"
+        app:layout_constraintLeft_toRightOf="@id/bar1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/bar3"
+        android:layout_width="2dp"
+        android:layout_height="@dimen/normal_bar_height"
+        android:layout_marginLeft="@dimen/bar_spacing"
+        android:background="@color/unit_bar_color"
+        app:layout_constraintLeft_toRightOf="@id/bar2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/bar4"
+        android:layout_width="2dp"
+        android:layout_height="@dimen/normal_bar_height"
+        android:layout_marginLeft="@dimen/bar_spacing"
+        android:background="@color/unit_bar_color"
+        app:layout_constraintLeft_toRightOf="@id/bar3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <View
+        android:id="@+id/bar5"
+        android:layout_width="2dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="@dimen/bar_spacing"
+        android:background="@color/middle_unit_bar_color"
+        app:layout_constraintLeft_toRightOf="@id/bar4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sub_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/bar5"
+        app:layout_constraintRight_toRightOf="@id/bar5"
+        app:layout_constraintTop_toBottomOf="@id/bar5"
+        tools:text="5" />
+
+
+    <View
+        android:id="@+id/bar6"
+        android:layout_width="2dp"
+        android:layout_height="@dimen/normal_bar_height"
+        android:layout_marginLeft="@dimen/bar_spacing"
+        android:background="@color/unit_bar_color"
+        app:layout_constraintLeft_toRightOf="@id/bar5"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/bar7"
+        android:layout_width="2dp"
+        android:layout_height="@dimen/normal_bar_height"
+        android:layout_marginLeft="@dimen/bar_spacing"
+        android:background="@color/unit_bar_color"
+        app:layout_constraintLeft_toRightOf="@id/bar6"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/bar8"
+        android:layout_width="2dp"
+        android:layout_height="@dimen/normal_bar_height"
+        android:layout_marginLeft="@dimen/bar_spacing"
+        android:background="@color/unit_bar_color"
+        app:layout_constraintLeft_toRightOf="@id/bar7"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/bar9"
+        android:layout_width="2dp"
+        android:layout_height="@dimen/normal_bar_height"
+        android:layout_marginLeft="@dimen/bar_spacing"
+        android:background="@color/unit_bar_color"
+        app:layout_constraintLeft_toRightOf="@id/bar8"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

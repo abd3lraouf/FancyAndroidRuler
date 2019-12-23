@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ScrollingValuePicker">
+        <attr name="rulerPrimaryColor" format="color" />
+        <attr name="rulerAccentColor" format="color" />
+        <attr name="rulerBackgroundColor" format="color" />
+        <attr name="rulerPointerOutlineColor" format="color" />
+        <attr name="rulerPointerBackgroundColor" format="color" />
+        <attr name="rulerPlaceValue" format="integer">
+            <flag name="ones" value="1" />
+            <flag name="twelves" value="12" />
+            <flag name="tens" value="10" />
+            <flag name="hundreds" value="100" />
+            <flag name="thousands" value="1000" />
+        </attr>
+        <attr name="rulerPointerThickness" format="integer" />
+        <attr name="rulerMaxValue" format="integer" />
+        <attr name="rulerMinValue" format="integer" />
+        <attr name="rulerDigits" format="integer">
+            <flag name="ten" value="10" />
+            <flag name="twelve" value="12" />
+        </attr>
+        <attr name="defaultPosition" format="enum">
+            <enum name="beginning" value="0" />
+            <enum name="middle" value="1" />
+            <enum name="end" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>
