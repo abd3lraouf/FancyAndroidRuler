@@ -27,7 +27,7 @@
         app:rulerMinValue="100"
         app:rulerPlaceValue="tens"
         app:defaultPosition="middle"
-        app:rulerPointerThickness="2"
+        app:rulerPointerThickness="3"
         app:rulerPointerBackgroundColor="#FFFFFF"
         app:rulerPointerOutlineColor="#eaebec"
         app:rulerPrimaryColor="#eaebec" />
