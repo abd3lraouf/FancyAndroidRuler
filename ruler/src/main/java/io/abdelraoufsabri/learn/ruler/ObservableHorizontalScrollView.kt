@@ -22,7 +22,6 @@ class ObservableHorizontalScrollView : HorizontalScrollView {
     constructor(context: Context, attr: AttributeSet) : super(context, attr)
 
     private var mOnScrollChangedListener: OnScrollChangedListener? = null
-
     /**
      * Interface definition for a callback to be invoked with the scroll
      * position changes.
@@ -58,6 +57,20 @@ class ObservableHorizontalScrollView : HorizontalScrollView {
                         mOnScrollChangedListener?.onScrollChanged(it)
                     }
         }
+    }
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        val fadingLength = (measuredWidth * 0.5F).toInt()
+        setFadingEdgeLength(fadingLength)
+        isHorizontalFadingEdgeEnabled = true
+    }
+
+    override fun getRightFadingEdgeStrength(): Float {
+        return 0F
+    }
+
+    override fun getLeftFadingEdgeStrength(): Float {
+        return 2F
     }
 
     override fun onScrollChanged(x: Int, y: Int, oldl: Int, oldt: Int) {
