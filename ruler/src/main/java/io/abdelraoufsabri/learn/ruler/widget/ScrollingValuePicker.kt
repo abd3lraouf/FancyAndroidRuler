@@ -162,7 +162,7 @@ class ScrollingValuePicker : LinearLayout {
         mScrollView.overScrollMode = ScrollView.OVER_SCROLL_NEVER
 
         mScrollView.layoutParams =
-            LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 60F.dpAsPixels())
+            LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 55F.dpAsPixels())
         orientation = VERTICAL
 
         addView(getPointer())
@@ -221,11 +221,8 @@ class ScrollingValuePicker : LinearLayout {
         val shape = ContextCompat.getDrawable(context, R.drawable.pointer_line) as Drawable
 
         pointer.setImageDrawable(shape)
-        val params = LayoutParams(
-            rulerPointerThickness.toFloat().dpAsPixels(),
-            15F.dpAsPixels()
-        )
-        params.setMargins(0, 5F.dpAsPixels(), 0, 5F.dpAsPixels())
+        val params = LayoutParams(rulerPointerThickness.toFloat().dpAsPixels(), 8F.dpAsPixels())
+        params.setMargins(0, 3F.dpAsPixels(), 0, 3F.dpAsPixels())
         params.gravity = Gravity.CENTER_HORIZONTAL
         pointer.layoutParams = params
 
