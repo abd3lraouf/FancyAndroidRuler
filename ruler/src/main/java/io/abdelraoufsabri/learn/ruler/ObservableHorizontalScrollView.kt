@@ -37,6 +37,20 @@ class ObservableHorizontalScrollView : HorizontalScrollView {
         fun onScrollChanged(x: Int)
     }
 
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        val fadingLength = (measuredWidth * 0.5F).toInt()
+        setFadingEdgeLength(fadingLength)
+        isHorizontalFadingEdgeEnabled = true
+    }
+
+    override fun getRightFadingEdgeStrength(): Float {
+        return 0F
+    }
+
+    override fun getLeftFadingEdgeStrength(): Float {
+        return 2F
+    }
     private var disposable: Disposable? = null
     private val source by lazy { PublishSubject.create<Int>() }
     private var throttleMillis = 0L
