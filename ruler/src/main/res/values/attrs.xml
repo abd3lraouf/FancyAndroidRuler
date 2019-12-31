@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="ScrollingValuePicker">
+    <declare-styleable name="FancyRuler">
         <attr name="rulerPrimaryColor" format="color" />
         <attr name="rulerAccentColor" format="color" />
         <attr name="rulerBackgroundColor" format="color" />
@@ -13,7 +13,6 @@
             <flag name="hundreds" value="100" />
             <flag name="thousands" value="1000" />
         </attr>
-        <attr name="rulerPointerThickness" format="integer" />
         <attr name="rulerMaxValue" format="integer" />
         <attr name="rulerMinValue" format="integer" />
         <attr name="rulerDigits" format="integer">

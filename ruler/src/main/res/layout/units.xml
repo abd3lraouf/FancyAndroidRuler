@@ -10,9 +10,10 @@
     <View
         android:id="@+id/bar0"
         android:layout_width="2dp"
-        android:layout_height="40dp"
+        android:layout_height="@dimen/bar_0_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@color/main_unit_bar_color"
+        android:background="@drawable/bar_main"
+
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,7 +31,7 @@
         android:layout_width="2dp"
         android:layout_height="@dimen/normal_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@color/unit_bar_color"
+        android:background="@drawable/normal_bar"
         app:layout_constraintLeft_toRightOf="@id/bar0"
         app:layout_constraintTop_toTopOf="parent"
 
@@ -41,7 +42,7 @@
         android:layout_width="2dp"
         android:layout_height="@dimen/normal_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@color/unit_bar_color"
+        android:background="@drawable/normal_bar"
         app:layout_constraintLeft_toRightOf="@id/bar1"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,7 +51,7 @@
         android:layout_width="2dp"
         android:layout_height="@dimen/normal_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@color/unit_bar_color"
+        android:background="@drawable/normal_bar"
         app:layout_constraintLeft_toRightOf="@id/bar2"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,7 +60,7 @@
         android:layout_width="2dp"
         android:layout_height="@dimen/normal_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@color/unit_bar_color"
+        android:background="@drawable/normal_bar"
         app:layout_constraintLeft_toRightOf="@id/bar3"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -67,9 +68,9 @@
     <View
         android:id="@+id/bar5"
         android:layout_width="2dp"
-        android:layout_height="25dp"
+        android:layout_height="@dimen/bar_5_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@color/middle_unit_bar_color"
+        android:background="@drawable/bar_middle"
         app:layout_constraintLeft_toRightOf="@id/bar4"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -88,7 +89,7 @@
         android:layout_width="2dp"
         android:layout_height="@dimen/normal_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@color/unit_bar_color"
+        android:background="@drawable/normal_bar"
         app:layout_constraintLeft_toRightOf="@id/bar5"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -97,7 +98,7 @@
         android:layout_width="2dp"
         android:layout_height="@dimen/normal_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@color/unit_bar_color"
+        android:background="@drawable/normal_bar"
         app:layout_constraintLeft_toRightOf="@id/bar6"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -106,7 +107,7 @@
         android:layout_width="2dp"
         android:layout_height="@dimen/normal_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@color/unit_bar_color"
+        android:background="@drawable/normal_bar"
         app:layout_constraintLeft_toRightOf="@id/bar7"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -115,7 +116,7 @@
         android:layout_width="2dp"
         android:layout_height="@dimen/normal_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@color/unit_bar_color"
+        android:background="@drawable/normal_bar"
         app:layout_constraintLeft_toRightOf="@id/bar8"
         app:layout_constraintTop_toTopOf="parent" />
 
