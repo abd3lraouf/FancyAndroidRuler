@@ -18,7 +18,7 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 
 
-class ScrollingValuePicker : LinearLayout {
+class FancyRuler : LinearLayout {
 
     private var firstLaunchSkipped: Boolean = false
     private var oldValue: Int = 0
@@ -34,7 +34,6 @@ class ScrollingValuePicker : LinearLayout {
     val rulerMinValue: Int
     private val rulerPlaceValue: Int
     private val rulerDigits: Int
-    private val rulerPointerThickness: Int
 
     private enum class DefaultPosition { BEGINNING, MIDDLE, END }
 
@@ -55,7 +54,6 @@ class ScrollingValuePicker : LinearLayout {
         rulerMinValue = 0
         rulerPlaceValue = 10
         rulerDigits = 10
-        rulerPointerThickness = 2F.dpAsPixels()
         defaultPosition = DefaultPosition.MIDDLE
 
 
@@ -68,86 +66,81 @@ class ScrollingValuePicker : LinearLayout {
         mScrollView = ObservableHorizontalScrollView(context)
 
         val styledAttributes =
-            context.obtainStyledAttributes(attr, R.styleable.ScrollingValuePicker, 0, 0)
+            context.obtainStyledAttributes(attr, R.styleable.FancyRuler, 0, 0)
 
         rulerAccentColor =
-            if (styledAttributes.hasValue(R.styleable.ScrollingValuePicker_rulerAccentColor)) {
+            if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerAccentColor)) {
                 styledAttributes.getColor(
-                    R.styleable.ScrollingValuePicker_rulerAccentColor,
+                    R.styleable.FancyRuler_rulerAccentColor,
                     Color.BLACK
                 )
             } else
                 Color.BLACK
 
         rulerPrimaryColor =
-            if (styledAttributes.hasValue(R.styleable.ScrollingValuePicker_rulerPrimaryColor)) {
+            if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerPrimaryColor)) {
                 styledAttributes.getColor(
-                    R.styleable.ScrollingValuePicker_rulerPrimaryColor,
+                    R.styleable.FancyRuler_rulerPrimaryColor,
                     Color.GRAY
                 )
             } else
                 Color.GRAY
 
         rulerBackgroundColor =
-            if (styledAttributes.hasValue(R.styleable.ScrollingValuePicker_rulerBackgroundColor)) {
+            if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerBackgroundColor)) {
                 styledAttributes.getColor(
-                    R.styleable.ScrollingValuePicker_rulerBackgroundColor,
+                    R.styleable.FancyRuler_rulerBackgroundColor,
                     Color.LTGRAY
                 )
             } else
                 Color.LTGRAY
 
         rulerPointerOutlineColor =
-            if (styledAttributes.hasValue(R.styleable.ScrollingValuePicker_rulerPointerOutlineColor)) {
+            if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerPointerOutlineColor)) {
                 styledAttributes.getColor(
-                    R.styleable.ScrollingValuePicker_rulerPointerOutlineColor,
+                    R.styleable.FancyRuler_rulerPointerOutlineColor,
                     Color.GRAY
                 )
             } else
                 Color.GRAY
 
         rulerPointerBackgroundColor =
-            if (styledAttributes.hasValue(R.styleable.ScrollingValuePicker_rulerPointerBackgroundColor)) {
+            if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerPointerBackgroundColor)) {
                 styledAttributes.getColor(
-                    R.styleable.ScrollingValuePicker_rulerPointerBackgroundColor,
+                    R.styleable.FancyRuler_rulerPointerBackgroundColor,
                     Color.WHITE
                 )
             } else
                 Color.WHITE
 
         rulerMaxValue =
-            if (styledAttributes.hasValue(R.styleable.ScrollingValuePicker_rulerMaxValue)) {
-                styledAttributes.getInt(R.styleable.ScrollingValuePicker_rulerMaxValue, 10)
+            if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerMaxValue)) {
+                styledAttributes.getInt(R.styleable.FancyRuler_rulerMaxValue, 10)
             } else
                 10
 
         rulerPlaceValue =
-            if (styledAttributes.hasValue(R.styleable.ScrollingValuePicker_rulerPlaceValue)) {
-                styledAttributes.getInt(R.styleable.ScrollingValuePicker_rulerPlaceValue, 1)
+            if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerPlaceValue)) {
+                styledAttributes.getInt(R.styleable.FancyRuler_rulerPlaceValue, 1)
             } else
                 1
 
         rulerMinValue =
-            if (styledAttributes.hasValue(R.styleable.ScrollingValuePicker_rulerMinValue)) {
-                styledAttributes.getInt(R.styleable.ScrollingValuePicker_rulerMinValue, 0)
+            if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerMinValue)) {
+                styledAttributes.getInt(R.styleable.FancyRuler_rulerMinValue, 0)
             } else
                 0
 
-        rulerPointerThickness =
-            if (styledAttributes.hasValue(R.styleable.ScrollingValuePicker_rulerPointerThickness)) {
-                styledAttributes.getInt(R.styleable.ScrollingValuePicker_rulerPointerThickness, 2)
-            } else
-                2
 
-        rulerDigits = if (styledAttributes.hasValue(R.styleable.ScrollingValuePicker_rulerDigits)) {
-            styledAttributes.getInt(R.styleable.ScrollingValuePicker_rulerDigits, 10)
+        rulerDigits = if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerDigits)) {
+            styledAttributes.getInt(R.styleable.FancyRuler_rulerDigits, 10)
         } else
             10
 
         defaultPosition =
-            if (styledAttributes.hasValue(R.styleable.ScrollingValuePicker_defaultPosition)) {
+            if (styledAttributes.hasValue(R.styleable.FancyRuler_defaultPosition)) {
                 val value =
-                    styledAttributes.getInt(R.styleable.ScrollingValuePicker_defaultPosition, 1)
+                    styledAttributes.getInt(R.styleable.FancyRuler_defaultPosition, 1)
                 DefaultPosition.values()[value]
             } else
                 DefaultPosition.MIDDLE
@@ -157,19 +150,28 @@ class ScrollingValuePicker : LinearLayout {
         initialize()
     }
 
+    private lateinit var topPointer: View
+    private lateinit var bottomPointer: View
+
     private fun initialize() {
         mScrollView.isHorizontalScrollBarEnabled = false
         mScrollView.overScrollMode = ScrollView.OVER_SCROLL_NEVER
 
-        mScrollView.layoutParams =
-            LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 55F.dpAsPixels())
-        orientation = VERTICAL
+        val layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 45F.dpAsPixels())
+        layoutParams.gravity = Gravity.CENTER_HORIZONTAL.and(Gravity.TOP)
+        layoutParams.setMargins(0, 3F.dpAsPixels(), 0, 3F.dpAsPixels())
 
-        addView(getPointer())
+        mScrollView.layoutParams = layoutParams
+
+        orientation = VERTICAL
+        topPointer = getPointer()
+        bottomPointer = getPointer()
+
+        addView(topPointer)
 
         addView(mScrollView)
 
-        addView(getPointer())
+        addView(bottomPointer)
 
         // Create a horizontal (by default) LinearLayout as our child container
         val container = LinearLayout(context)
@@ -221,8 +223,7 @@ class ScrollingValuePicker : LinearLayout {
         val shape = ContextCompat.getDrawable(context, R.drawable.pointer_line) as Drawable
 
         pointer.setImageDrawable(shape)
-        val params = LayoutParams(rulerPointerThickness.toFloat().dpAsPixels(), 8F.dpAsPixels())
-        params.setMargins(0, 3F.dpAsPixels(), 0, 3F.dpAsPixels())
+        val params = LayoutParams(2F.dpAsPixels(), 6F.dpAsPixels())
         params.gravity = Gravity.CENTER_HORIZONTAL
         pointer.layoutParams = params
 
@@ -231,18 +232,29 @@ class ScrollingValuePicker : LinearLayout {
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
+        val cx = width / 2
+        topPointer.layout(
+            (cx - 1.75 * 2F.dpAsPixels() / 2).toInt()
+            , topPointer.top
+            , (cx + .25 * 2F.dpAsPixels() / 2).toInt()
+            , topPointer.bottom
+        )
 
-        if (changed) {
-            // Layout the spacers now that we are measured
+        bottomPointer.layout(
+            (cx - 1.75 * 2F.dpAsPixels() / 2).toInt()
+            , bottomPointer.top
+            , (cx + .25 * 2F.dpAsPixels() / 2).toInt()
+            , bottomPointer.bottom
+        )
 
-            val leftParams = mLeftSpacer.layoutParams
-            leftParams.width = width / 2
-            mLeftSpacer.layoutParams = leftParams
+        val leftParams = mLeftSpacer.layoutParams
+        leftParams.width = width / 2
+        mLeftSpacer.layoutParams = leftParams
 
-            val rightParams = mRightSpacer.layoutParams
-            rightParams.width = width / 2
-            mRightSpacer.layoutParams = rightParams
-        }
+        val rightParams = mRightSpacer.layoutParams
+        rightParams.width = width / 2
+        mRightSpacer.layoutParams = rightParams
+
     }
 
     private var listener: ObservableHorizontalScrollView.OnScrollChangedListener? = null
