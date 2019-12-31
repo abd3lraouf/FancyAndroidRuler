@@ -2,4 +2,6 @@
 <resources>
     <dimen name="bar_spacing">14dp</dimen>
     <dimen name="normal_bar_height">12.5dp</dimen>
+    <dimen name="bar_0_height">30dp</dimen>
+    <dimen name="bar_5_height">20dp</dimen>
 </resources>

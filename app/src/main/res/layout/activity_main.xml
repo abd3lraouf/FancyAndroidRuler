@@ -16,7 +16,7 @@
         android:textSize="32sp"
         tools:text="1" />
 
-    <io.abdelraoufsabri.learn.ruler.widget.ScrollingValuePicker
+    <io.abdelraoufsabri.learn.ruler.widget.FancyRuler
         android:id="@+id/myScrollingValuePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +27,6 @@
         app:rulerMinValue="100"
         app:rulerPlaceValue="tens"
         app:defaultPosition="middle"
-        app:rulerPointerThickness="3"
         app:rulerPointerBackgroundColor="#FFFFFF"
         app:rulerPointerOutlineColor="#eaebec"
         app:rulerPrimaryColor="#eaebec" />
