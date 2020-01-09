@@ -30,15 +30,14 @@ class FancyRuler : LinearLayout {
     private val rulerBackgroundColor: Int
     private val rulerPointerOutlineColor: Int
     private val rulerPointerBackgroundColor: Int
-    val rulerMaxValue: Int
-    val rulerMinValue: Int
+    private val rulerMaxValue: Int
+    private val rulerMinValue: Int
     private val rulerPlaceValue: Int
     private val rulerDigits: Int
 
-    private enum class DefaultPosition { BEGINNING, MIDDLE, END }
 
-    private val defaultPosition: DefaultPosition
-    val step by lazy { 16F.dpAsPixels() }
+    private val defaultPosition: Int
+    private val step by lazy { 16F.dpAsPixels() }
 
     constructor(context: Context) : super(context) {
         mLeftSpacer = View(context)
@@ -54,7 +53,7 @@ class FancyRuler : LinearLayout {
         rulerMinValue = 0
         rulerPlaceValue = 10
         rulerDigits = 10
-        defaultPosition = DefaultPosition.MIDDLE
+        defaultPosition = -2
 
 
         initialize()
@@ -139,11 +138,10 @@ class FancyRuler : LinearLayout {
 
         defaultPosition =
             if (styledAttributes.hasValue(R.styleable.FancyRuler_defaultPosition)) {
-                val value =
-                    styledAttributes.getInt(R.styleable.FancyRuler_defaultPosition, 1)
-                DefaultPosition.values()[value]
+                styledAttributes.getInt(R.styleable.FancyRuler_defaultPosition, -2)
+
             } else
-                DefaultPosition.MIDDLE
+                -2
 
         styledAttributes.recycle()
 
@@ -202,10 +200,12 @@ class FancyRuler : LinearLayout {
         }
 
         when (defaultPosition) {
-            DefaultPosition.BEGINNING -> scrollTo(startPosition())
-            DefaultPosition.MIDDLE -> scrollTo(middlePosition())
-            DefaultPosition.END -> scrollTo(endPosition())
+            -1 -> scrollTo(startPosition())
+            -2 -> scrollTo(middlePosition())
+            -3 -> scrollTo(endPosition())
+            else -> scrollTo(((defaultPosition - rulerMinValue + 1) * step).toFloat())
         }
+
         // Create the left and right spacers, don't worry about their dimensions, yet.
 
         container.addView(mLeftSpacer, 0)

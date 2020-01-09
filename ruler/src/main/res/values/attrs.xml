@@ -19,10 +19,10 @@
             <flag name="ten" value="10" />
             <flag name="twelve" value="12" />
         </attr>
-        <attr name="defaultPosition" format="enum">
-            <enum name="beginning" value="0" />
-            <enum name="middle" value="1" />
-            <enum name="end" value="2" />
+        <attr name="defaultPosition" format="integer">
+            <flag name="beginning" value="-1" />
+            <flag name="middle" value="-2" />
+            <flag name="end" value="-3" />
         </attr>
     </declare-styleable>
 </resources>

@@ -23,10 +23,10 @@
         app:rulerAccentColor="#000"
         app:rulerBackgroundColor="#fff"
         app:rulerDigits="ten"
-        app:rulerMaxValue="200"
         app:rulerMinValue="100"
+        app:rulerMaxValue="200"
         app:rulerPlaceValue="tens"
-        app:defaultPosition="middle"
+        app:defaultPosition="120"
         app:rulerPointerBackgroundColor="#FFFFFF"
         app:rulerPointerOutlineColor="#eaebec"
         app:rulerPrimaryColor="#eaebec" />
