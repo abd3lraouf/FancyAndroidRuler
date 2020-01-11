@@ -66,7 +66,7 @@ class ObservableHorizontalScrollView : HorizontalScrollView {
 
         disposable?.dispose()
         if (throttleMillis != 0L) {
-            disposable = source.throttleLast(throttleMillis, TimeUnit.MILLISECONDS)
+            disposable = source.throttleLatest(throttleMillis, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
