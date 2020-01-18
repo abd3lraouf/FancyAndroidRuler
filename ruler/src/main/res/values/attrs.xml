@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="FancyRuler">
-        <attr name="rulerPrimaryColor" format="color" />
-        <attr name="rulerAccentColor" format="color" />
+
+        <attr name="rulerMainUnitBarColor" format="color" />
+        <attr name="rulerMainUnitTextColor" format="color" />
+        <attr name="rulerMiddleUnitBarColor" format="color" />
+        <attr name="rulerMiddleUnitTextColor" format="color" />
+        <attr name="rulerQuarterUnitBarColor" format="color" />
+        <attr name="rulerQuarterUnitTextColor" format="color" />
+        <attr name="rulerThreeQuartersUnitBarColor" format="color" />
+        <attr name="rulerThreeQuartersUnitTextColor" format="color" />
+        <attr name="rulerNormalUnitBarColor" format="color" />
+        <attr name="rulerPointerColor" format="color" />
         <attr name="rulerBackgroundColor" format="color" />
-        <attr name="rulerPointerOutlineColor" format="color" />
-        <attr name="rulerPointerBackgroundColor" format="color" />
-        <attr name="rulerPlaceValue" format="integer">
-            <flag name="ones" value="1" />
-            <flag name="twelves" value="12" />
-            <flag name="tens" value="10" />
-            <flag name="hundreds" value="100" />
-            <flag name="thousands" value="1000" />
+
+        <attr name="rulerSystem" format="integer">
+            <flag name="imperial" value="1" />
+            <flag name="metric" value="10" />
         </attr>
         <attr name="rulerMaxValue" format="integer" />
         <attr name="rulerMinValue" format="integer" />
-        <attr name="rulerDigits" format="integer">
-            <flag name="ten" value="10" />
-            <flag name="twelve" value="12" />
-        </attr>
-        <attr name="defaultPosition" format="integer">
-            <flag name="beginning" value="-1" />
+        <attr name="rulerDefaultPosition" format="float">
+            <flag name="start" value="-1" />
             <flag name="middle" value="-2" />
             <flag name="end" value="-3" />
         </attr>
