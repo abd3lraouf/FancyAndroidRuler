@@ -1,10 +1,9 @@
 package io.abdelraoufsabri.learn.androidruler
 
 import android.os.Bundle
-import android.view.SoundEffectConstants
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.math.abs
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -15,7 +14,10 @@ class MainActivity : AppCompatActivity() {
 
         myScrollingValuePicker.setOnScrollChangedListener({
             value_text.text = myScrollingValuePicker.getReading(it).toString()
-        }, 1000)
-    }
+        }, 250)
 
+        myScrollingValuePicker2.setOnScrollChangedListener({
+            value_text2.text = myScrollingValuePicker2.getReading(it).toString()
+        }, 250)
+    }
 }

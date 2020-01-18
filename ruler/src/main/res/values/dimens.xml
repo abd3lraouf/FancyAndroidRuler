@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="bar_spacing">14dp</dimen>
-    <dimen name="normal_bar_height">12.5dp</dimen>
-    <dimen name="bar_0_height">30dp</dimen>
-    <dimen name="bar_5_height">20dp</dimen>
+    <dimen name="normal_bar_height">10dp</dimen>
+    <dimen name="main_bar_height">30dp</dimen>
+    <dimen name="middle_bar_height">20dp</dimen>
+    <dimen name="quarter_bar_height">15dp</dimen>
+    <dimen name="radius">20dp</dimen>
 </resources>

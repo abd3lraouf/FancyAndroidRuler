@@ -5,25 +5,27 @@
     android:id="@+id/linearLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="@color/rulerBackgroundColor"
+    >
 
     <View
-        android:id="@+id/bar0"
+        android:id="@+id/mainUnitBar"
         android:layout_width="2dp"
-        android:layout_height="@dimen/bar_0_height"
+        android:layout_height="@dimen/main_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@drawable/bar_main"
-
+        android:background="@drawable/main_unit_bar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/main_unit"
+        android:id="@+id/mainUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@id/bar0"
-        app:layout_constraintRight_toRightOf="@id/bar0"
-        app:layout_constraintTop_toBottomOf="@id/bar0"
+        android:textColor="@color/mainUnitTextColor"
+        app:layout_constraintLeft_toLeftOf="@id/mainUnitBar"
+        app:layout_constraintRight_toRightOf="@id/mainUnitBar"
+        app:layout_constraintTop_toBottomOf="@id/mainUnitBar"
         tools:text="0" />
 
     <View
@@ -31,84 +33,109 @@
         android:layout_width="2dp"
         android:layout_height="@dimen/normal_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@drawable/normal_bar"
-        app:layout_constraintLeft_toRightOf="@id/bar0"
+        android:background="@drawable/normal_unit_bar"
+        app:layout_constraintLeft_toRightOf="@id/mainUnitBar"
         app:layout_constraintTop_toTopOf="parent"
 
         />
 
     <View
-        android:id="@+id/bar2"
+        android:id="@+id/quarterUnitBar"
         android:layout_width="2dp"
         android:layout_height="@dimen/normal_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@drawable/normal_bar"
+        android:background="@drawable/quarter_unit_bar"
         app:layout_constraintLeft_toRightOf="@id/bar1"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/quarterUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1/4"
+        android:textColor="@color/quarterUnitTextColor"
+        android:textSize="10sp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="@id/quarterUnitBar"
+        app:layout_constraintRight_toRightOf="@id/quarterUnitBar"
+        app:layout_constraintTop_toBottomOf="@id/quarterUnitBar" />
 
     <View
         android:id="@+id/bar3"
         android:layout_width="2dp"
         android:layout_height="@dimen/normal_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@drawable/normal_bar"
-        app:layout_constraintLeft_toRightOf="@id/bar2"
+        android:background="@drawable/normal_unit_bar"
+        app:layout_constraintLeft_toRightOf="@id/quarterUnitBar"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <View
         android:id="@+id/bar4"
         android:layout_width="2dp"
         android:layout_height="@dimen/normal_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@drawable/normal_bar"
+        android:background="@drawable/normal_unit_bar"
         app:layout_constraintLeft_toRightOf="@id/bar3"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <View
-        android:id="@+id/bar5"
+        android:id="@+id/middleBar"
         android:layout_width="2dp"
-        android:layout_height="@dimen/bar_5_height"
+        android:layout_height="@dimen/middle_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@drawable/bar_middle"
+        android:background="@drawable/middle_unit_bar"
         app:layout_constraintLeft_toRightOf="@id/bar4"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/sub_unit"
+        android:id="@+id/middleUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@id/bar5"
-        app:layout_constraintRight_toRightOf="@id/bar5"
-        app:layout_constraintTop_toBottomOf="@id/bar5"
-        tools:text="5" />
-
+        android:text="5"
+        android:textColor="@color/middleUnitTextColor"
+        app:layout_constraintLeft_toLeftOf="@id/middleBar"
+        app:layout_constraintRight_toRightOf="@id/middleBar"
+        app:layout_constraintTop_toBottomOf="@id/middleBar" />
 
     <View
         android:id="@+id/bar6"
         android:layout_width="2dp"
         android:layout_height="@dimen/normal_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@drawable/normal_bar"
-        app:layout_constraintLeft_toRightOf="@id/bar5"
+        android:background="@drawable/normal_unit_bar"
+        app:layout_constraintLeft_toRightOf="@id/middleBar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/bar7"
+        android:id="@+id/threeQuartersBar"
         android:layout_width="2dp"
         android:layout_height="@dimen/normal_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@drawable/normal_bar"
+        android:background="@drawable/three_quarters_unit_bar"
         app:layout_constraintLeft_toRightOf="@id/bar6"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/threeQuartersUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3/4"
+        android:textColor="@color/threeQuartersUnitTextColor"
+        android:textSize="10sp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="@id/threeQuartersBar"
+        app:layout_constraintRight_toRightOf="@id/threeQuartersBar"
+        app:layout_constraintTop_toBottomOf="@id/threeQuartersBar" />
 
     <View
         android:id="@+id/bar8"
         android:layout_width="2dp"
         android:layout_height="@dimen/normal_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@drawable/normal_bar"
-        app:layout_constraintLeft_toRightOf="@id/bar7"
+        android:background="@drawable/normal_unit_bar"
+        app:layout_constraintLeft_toRightOf="@id/threeQuartersBar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
@@ -116,7 +143,7 @@
         android:layout_width="2dp"
         android:layout_height="@dimen/normal_bar_height"
         android:layout_marginLeft="@dimen/bar_spacing"
-        android:background="@drawable/normal_bar"
+        android:background="@drawable/normal_unit_bar"
         app:layout_constraintLeft_toRightOf="@id/bar8"
         app:layout_constraintTop_toTopOf="parent" />
 

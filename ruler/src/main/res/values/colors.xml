@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="main_unit_bar_color">#99000000</color>
-    <color name="main_unit_text_color">#E6000000</color>
-    <color name="middle_unit_bar_color">#80000000</color>
-    <color name="middle_unit_text_color">#99000000</color>
-    <color name="unit_bar_color">#B8B2B2</color>
+
+    <color name="mainUnitBarColor">#99000000</color>
+    <color name="quarterUnitBarColor">#66000000</color>
+    <color name="middleUnitBarColor">#80000000</color>
+    <color name="threeQuartersUnitBarColor">#66000000</color>
+    <color name="mainUnitTextColor">#E6000000</color>
+    <color name="quarterUnitTextColor">#80000000</color>
+    <color name="middleUnitTextColor">#99000000</color>
+    <color name="threeQuartersUnitTextColor">#80000000</color>
+    <color name="normalUnitBarColor">#FFB8B2B2</color>
+    <color name="rulerPointerColor">#E91E63</color>
+    <color name="rulerBackgroundColor">#FFFFFF</color>
 </resources>

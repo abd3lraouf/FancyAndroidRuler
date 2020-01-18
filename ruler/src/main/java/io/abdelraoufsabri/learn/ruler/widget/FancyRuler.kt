@@ -2,60 +2,87 @@ package io.abdelraoufsabri.learn.ruler.widget
 
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.Drawable
+import android.content.res.TypedArray
+import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
-import android.view.*
+import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
+import androidx.annotation.ColorRes
+import androidx.annotation.StyleableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import io.abdelraoufsabri.learn.ruler.ObservableHorizontalScrollView
 import io.abdelraoufsabri.learn.ruler.R
 import kotlinx.android.synthetic.main.units.view.*
-import kotlin.math.abs
 import kotlin.math.roundToInt
 
 
 class FancyRuler : LinearLayout {
 
-    private var firstLaunchSkipped: Boolean = false
-    private var oldValue: Int = 0
+    private var multiplier = 0
+
     private val mLeftSpacer: View
     private val mRightSpacer: View
     private val mScrollView: ObservableHorizontalScrollView
-    private val rulerAccentColor: Int
-    private val rulerPrimaryColor: Int
-    private val rulerBackgroundColor: Int
-    private val rulerPointerOutlineColor: Int
-    private val rulerPointerBackgroundColor: Int
+
     private val rulerMaxValue: Int
     private val rulerMinValue: Int
-    private val rulerPlaceValue: Int
-    private val rulerDigits: Int
+    private val rulerSystem: Int
 
-
-    private val defaultPosition: Int
+    private val defaultPosition: Float
     private val step by lazy { 16F.dpAsPixels() }
+
+    private val METRIC_SYSTEM = 10
+
+    private val DEFAULT_RULER_MAX = 100
+    private val DEFAULT_RULER_MIN = 0
+
+    private val START_POSITION = -1F
+    private val MIDDLE_POSITION = -2F
+    private val END_POSITION = -3F
+
+    private lateinit var styledAttributes: TypedArray
+
+    private val mainUnitBarColor: Int
+    private val quarterUnitBarColor: Int
+    private val middleUnitBarColor: Int
+    private val threeQuartersUnitBarColor: Int
+    private val mainUnitTextColor: Int
+    private val quarterUnitTextColor: Int
+    private val middleUnitTextColor: Int
+    private val threeQuartersUnitTextColor: Int
+    private val normalUnitBarColor: Int
+    private val rulerPointerColor: Int
+    private val rulerBackgroundColor: Int
+
 
     constructor(context: Context) : super(context) {
         mLeftSpacer = View(context)
         mRightSpacer = View(context)
         mScrollView = ObservableHorizontalScrollView(context)
 
-        rulerAccentColor = Color.BLACK
-        rulerPrimaryColor = Color.GRAY
-        rulerBackgroundColor = Color.WHITE
-        rulerPointerOutlineColor = Color.GRAY
-        rulerPointerBackgroundColor = Color.WHITE
-        rulerMaxValue = 100
-        rulerMinValue = 0
-        rulerPlaceValue = 10
-        rulerDigits = 10
-        defaultPosition = -2
+        mainUnitBarColor = ContextCompat.getColor(context, R.color.mainUnitBarColor)
+        quarterUnitBarColor = ContextCompat.getColor(context, R.color.quarterUnitBarColor)
+        middleUnitBarColor = ContextCompat.getColor(context, R.color.middleUnitBarColor)
+        threeQuartersUnitBarColor = ContextCompat.getColor(context, R.color.threeQuartersUnitBarColor)
+        mainUnitTextColor = ContextCompat.getColor(context, R.color.mainUnitTextColor)
+        quarterUnitTextColor = ContextCompat.getColor(context, R.color.quarterUnitTextColor)
+        middleUnitTextColor = ContextCompat.getColor(context, R.color.middleUnitTextColor)
+        threeQuartersUnitTextColor = ContextCompat.getColor(context, R.color.threeQuartersUnitTextColor)
+        normalUnitBarColor = ContextCompat.getColor(context, R.color.normalUnitBarColor)
+        rulerPointerColor = ContextCompat.getColor(context, R.color.rulerPointerColor)
+        rulerBackgroundColor = ContextCompat.getColor(context, R.color.rulerBackgroundColor)
 
-
+        rulerMaxValue = DEFAULT_RULER_MAX
+        rulerMinValue = DEFAULT_RULER_MIN
+        rulerSystem = METRIC_SYSTEM
+        defaultPosition = MIDDLE_POSITION
         initialize()
     }
 
@@ -64,94 +91,60 @@ class FancyRuler : LinearLayout {
         mRightSpacer = View(context)
         mScrollView = ObservableHorizontalScrollView(context)
 
-        val styledAttributes =
-            context.obtainStyledAttributes(attr, R.styleable.FancyRuler, 0, 0)
+        styledAttributes = context.obtainStyledAttributes(attr, R.styleable.FancyRuler, 0, 0)
 
-        rulerAccentColor =
-            if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerAccentColor)) {
-                styledAttributes.getColor(
-                    R.styleable.FancyRuler_rulerAccentColor,
-                    Color.BLACK
-                )
-            } else
-                Color.BLACK
+        mainUnitBarColor = getColorFromXml(context, R.styleable.FancyRuler_rulerMainUnitBarColor, R.color.mainUnitBarColor)
+        quarterUnitBarColor = getColorFromXml(context, R.styleable.FancyRuler_rulerQuarterUnitBarColor, R.color.quarterUnitBarColor)
+        middleUnitBarColor = getColorFromXml(context, R.styleable.FancyRuler_rulerMiddleUnitBarColor, R.color.middleUnitBarColor)
+        threeQuartersUnitBarColor = getColorFromXml(context, R.styleable.FancyRuler_rulerThreeQuartersUnitBarColor, R.color.threeQuartersUnitBarColor)
+        mainUnitTextColor = getColorFromXml(context, R.styleable.FancyRuler_rulerMainUnitTextColor, R.color.mainUnitTextColor)
+        quarterUnitTextColor = getColorFromXml(context, R.styleable.FancyRuler_rulerQuarterUnitTextColor, R.color.quarterUnitTextColor)
+        middleUnitTextColor = getColorFromXml(context, R.styleable.FancyRuler_rulerMiddleUnitTextColor, R.color.middleUnitTextColor)
+        threeQuartersUnitTextColor = getColorFromXml(context, R.styleable.FancyRuler_rulerThreeQuartersUnitTextColor, R.color.threeQuartersUnitTextColor)
+        normalUnitBarColor = getColorFromXml(context, R.styleable.FancyRuler_rulerNormalUnitBarColor, R.color.normalUnitBarColor)
+        rulerPointerColor = getColorFromXml(context, R.styleable.FancyRuler_rulerPointerColor, R.color.rulerPointerColor)
+        rulerBackgroundColor = getColorFromXml(context, R.styleable.FancyRuler_rulerBackgroundColor, R.color.rulerBackgroundColor)
 
-        rulerPrimaryColor =
-            if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerPrimaryColor)) {
-                styledAttributes.getColor(
-                    R.styleable.FancyRuler_rulerPrimaryColor,
-                    Color.GRAY
-                )
-            } else
-                Color.GRAY
-
-        rulerBackgroundColor =
-            if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerBackgroundColor)) {
-                styledAttributes.getColor(
-                    R.styleable.FancyRuler_rulerBackgroundColor,
-                    Color.LTGRAY
-                )
-            } else
-                Color.LTGRAY
-
-        rulerPointerOutlineColor =
-            if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerPointerOutlineColor)) {
-                styledAttributes.getColor(
-                    R.styleable.FancyRuler_rulerPointerOutlineColor,
-                    Color.GRAY
-                )
-            } else
-                Color.GRAY
-
-        rulerPointerBackgroundColor =
-            if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerPointerBackgroundColor)) {
-                styledAttributes.getColor(
-                    R.styleable.FancyRuler_rulerPointerBackgroundColor,
-                    Color.WHITE
-                )
-            } else
-                Color.WHITE
-
-        rulerMaxValue =
-            if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerMaxValue)) {
-                styledAttributes.getInt(R.styleable.FancyRuler_rulerMaxValue, 10)
-            } else
-                10
-
-        rulerPlaceValue =
-            if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerPlaceValue)) {
-                styledAttributes.getInt(R.styleable.FancyRuler_rulerPlaceValue, 1)
-            } else
-                1
-
-        rulerMinValue =
-            if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerMinValue)) {
-                styledAttributes.getInt(R.styleable.FancyRuler_rulerMinValue, 0)
-            } else
-                0
-
-
-        rulerDigits = if (styledAttributes.hasValue(R.styleable.FancyRuler_rulerDigits)) {
-            styledAttributes.getInt(R.styleable.FancyRuler_rulerDigits, 10)
-        } else
-            10
-
-        defaultPosition =
-            if (styledAttributes.hasValue(R.styleable.FancyRuler_defaultPosition)) {
-                styledAttributes.getInt(R.styleable.FancyRuler_defaultPosition, -2)
-
-            } else
-                -2
+        rulerMaxValue = getIntFromXml(R.styleable.FancyRuler_rulerMaxValue, DEFAULT_RULER_MAX)
+        rulerMinValue = getIntFromXml(R.styleable.FancyRuler_rulerMinValue, DEFAULT_RULER_MIN)
+        rulerSystem = getIntFromXml(R.styleable.FancyRuler_rulerSystem, METRIC_SYSTEM)
+        defaultPosition = getFloatFromXml(R.styleable.FancyRuler_rulerDefaultPosition, MIDDLE_POSITION)
 
         styledAttributes.recycle()
 
         initialize()
     }
 
+    private fun getFloatFromXml(@StyleableRes styledId: Int, defaultValue: Float): Float {
+        return if (styledAttributes.hasValue(styledId)) {
+            styledAttributes.getFloat(styledId, defaultValue)
+        } else
+            defaultValue
+    }
+
+    private fun getIntFromXml(@StyleableRes styledId: Int, defaultValue: Int): Int {
+        return if (styledAttributes.hasValue(styledId)) {
+            styledAttributes.getInt(styledId, defaultValue)
+        } else
+            defaultValue
+    }
+
+    private fun getColorFromXml(context: Context, @StyleableRes styledColor: Int, @ColorRes defaultColor: Int): Int {
+        return if (styledAttributes.hasValue(styledColor)) {
+            styledAttributes.getColor(
+                styledColor,
+                ContextCompat.getColor(context, defaultColor)
+            )
+        } else
+            ContextCompat.getColor(context, defaultColor)
+    }
+
     private lateinit var topPointer: View
     private lateinit var bottomPointer: View
 
+
     private fun initialize() {
+
         mScrollView.isHorizontalScrollBarEnabled = false
         mScrollView.overScrollMode = ScrollView.OVER_SCROLL_NEVER
 
@@ -160,73 +153,109 @@ class FancyRuler : LinearLayout {
         layoutParams.setMargins(0, 3F.dpAsPixels(), 0, 3F.dpAsPixels())
 
         mScrollView.layoutParams = layoutParams
-
         orientation = VERTICAL
-        topPointer = getPointer()
-        bottomPointer = getPointer()
 
+        topPointer = getPointer()
         addView(topPointer)
 
         addView(mScrollView)
 
+        bottomPointer = getPointer()
         addView(bottomPointer)
 
-        // Create a horizontal (by default) LinearLayout as our child container
         val container = LinearLayout(context)
+
         mScrollView.addView(container)
 
-        // Our actual content is an ImageView, but doesn't need to be
+        multiplier = (if (rulerSystem == METRIC_SYSTEM) 1 else 8)
 
         for (i in 0..rulerMaxValue) {
+
             val view =
                 LayoutInflater.from(context).inflate(R.layout.units, null) as ConstraintLayout
 
-            val value = (i * rulerPlaceValue) + rulerMinValue
-            view.main_unit.text = value.toString()
-            view.main_unit.setTextColor(rulerAccentColor)
+            changeViewColor(view.mainUnitBar, mainUnitBarColor)
+            changeViewColor(view.middleBar, middleUnitBarColor)
+            changeViewColor(view.quarterUnitBar, quarterUnitBarColor)
+            changeViewColor(view.threeQuartersBar, threeQuartersUnitBarColor)
 
-            view.sub_unit.text = (value + 5).toString()
-            view.sub_unit.setTextColor(rulerAccentColor)
+            changeViewColor(view.bar1, normalUnitBarColor)
+            changeViewColor(view.bar3, normalUnitBarColor)
+            changeViewColor(view.bar4, normalUnitBarColor)
+            changeViewColor(view.bar6, normalUnitBarColor)
+            changeViewColor(view.bar8, normalUnitBarColor)
+            changeViewColor(view.bar9, normalUnitBarColor)
+
+            view.mainUnit.setTextColor(mainUnitTextColor)
+            view.middleUnit.setTextColor(middleUnitTextColor)
+            view.quarterUnit.setTextColor(quarterUnitTextColor)
+            view.threeQuartersUnit.setTextColor(threeQuartersUnitTextColor)
+
+            if (rulerSystem != METRIC_SYSTEM) { // imperial
+
+                view.bar4.visibility = View.GONE
+                view.bar8.visibility = View.GONE
+                view.quarterUnitBar.layoutParams.height =
+                    resources.getDimension(R.dimen.quarter_bar_height).toInt()
+
+                view.threeQuartersBar.layoutParams.height =
+                    resources.getDimension(R.dimen.quarter_bar_height).toInt()
+
+                view.middleUnit.text = "1/2"
+                view.quarterUnit.visibility = View.VISIBLE
+                view.threeQuartersUnit.visibility = View.VISIBLE
+            }
+
+            val value = (i * rulerSystem) + rulerMinValue
+
+            view.mainUnit.text = value.toString()
 
             view.setBackgroundColor(rulerBackgroundColor)
-
 
             container.addView(view)
 
             if (value >= rulerMaxValue) {
-                view.removeViews(2, 10)
+                view.removeViews(2, view.childCount - 2)
                 break
             }
         }
 
         when (defaultPosition) {
-            -1 -> scrollTo(startPosition())
-            -2 -> scrollTo(middlePosition())
-            -3 -> scrollTo(endPosition())
-            else -> scrollTo(((defaultPosition - rulerMinValue + 1) * step).toFloat())
+            START_POSITION -> scrollTo(startPosition())
+            MIDDLE_POSITION -> scrollTo(middlePosition())
+            END_POSITION -> scrollTo(endPosition())
+            else -> scrollTo(customPosition())
         }
-
-        // Create the left and right spacers, don't worry about their dimensions, yet.
 
         container.addView(mLeftSpacer, 0)
         container.addView(mRightSpacer)
     }
 
+    private fun changeViewColor(item: View, color: Int) {
+        val gradientDrawable = item.background as GradientDrawable
+        gradientDrawable.mutate()
+        gradientDrawable.setColor(color)
+        item.background = gradientDrawable
+    }
+
+    private fun customPosition() = ((defaultPosition - rulerMinValue) * step * multiplier) + step
+
     private fun startPosition() = step.toFloat()
 
-    private fun middlePosition() = ((rulerMaxValue - rulerMinValue) / 2F + 1) * step
+    private fun middlePosition() =
+        (((rulerMaxValue - rulerMinValue) / 2F) * multiplier * step) + step
 
-    private fun endPosition() = (rulerMaxValue - rulerMinValue + 1) * startPosition()
+    private fun endPosition() = ((rulerMaxValue - rulerMinValue) * multiplier * 1F * step) + step
 
     private fun getPointer(): View {
         val pointer = ImageView(context)
-        val shape = ContextCompat.getDrawable(context, R.drawable.pointer_line) as Drawable
-
+        val shape = ContextCompat.getDrawable(context, R.drawable.pointer_line) as GradientDrawable
+        shape.mutate()
+        shape.setColor(rulerPointerColor)
         pointer.setImageDrawable(shape)
         val params = LayoutParams(2F.dpAsPixels(), 6F.dpAsPixels())
         params.gravity = Gravity.CENTER_HORIZONTAL
         pointer.layoutParams = params
-
         return pointer
     }
 
@@ -276,60 +305,41 @@ class FancyRuler : LinearLayout {
         mScrollView.setOnScrollChangedListener(this.listener, throttleMillis)
     }
 
+    private var runnable: Runnable? = null
     private fun scrollTo(x: Float) {
-        mScrollView.post {
-            ObjectAnimator.ofInt(mScrollView, "scrollX", x.roundToInt()).setDuration(100L).start();
+        mScrollView.removeCallbacks(runnable)
+        runnable = Runnable {
+            ObjectAnimator.ofInt(mScrollView, "scrollX", x.roundToInt()).setDuration(1).start();
         }
+        mScrollView.post(runnable)
     }
 
-    fun getReading(xValue: Int): Int {
+    private fun overScrolled(value: Float) = value > rulerMaxValue
 
-        val value = when {
-            approachesNextStep(xValue) -> nextStep(xValue)
-            else -> prevStep(xValue)
+
+    private fun underScrolled(value: Float) = value < rulerMinValue
+
+
+    fun getReading(xValue: Int): Float {
+        val nearestMark = when {
+            approachesNextStep(xValue) -> xValue / step
+            else -> (xValue - step) / step
         }
 
-        val correctedX = finalizeValue(value)
+        val correctedMark = (nearestMark * step) + step
+
+        val value = nearestMark / multiplier * 1F + rulerMinValue
+
+        Log.e("ManoO nearestMark", nearestMark.toString())
+        Log.e("ManoO xValue", xValue.toString())
 
         when {
             underScrolled(value) -> scrollTo(startPosition())
             overScrolled(value) -> scrollTo(endPosition())
-            else -> scrollTo(correctedX.toFloat())
+            else -> scrollTo(correctedMark.toFloat())
         }
-
-        if (valueChanged(value) && firstLaunchSkipped) {
-            playTickSound(value)
-        }
-
-        oldValue = value
-        firstLaunchSkipped = true
-
         return value
     }
-
-
-    private fun overScrolled(value: Int) = value > rulerMaxValue
-
-    private fun underScrolled(value: Int) = value < rulerMinValue
-
-    private fun playTickSound(value: Int) {
-        val soundPlayTimes = 8
-        val diff = oldValue - value
-
-        val abs = abs(diff) % soundPlayTimes
-
-        for (i in 0..abs) {
-            playSoundEffect(SoundEffectConstants.CLICK)
-        }
-    }
-
-    private fun valueChanged(value: Int) = oldValue != value
-
-    private fun finalizeValue(value: Int) = ((value - rulerMinValue) * step) + step
-
-    private fun prevStep(xValue: Int) = nextStep(xValue - step)
-
-    private fun nextStep(xValue: Int) = rulerMinValue + xValue / step
 
     private fun approachesNextStep(xValue: Int) = xValue % step > (step * .5)
 
@@ -337,5 +347,4 @@ class FancyRuler : LinearLayout {
         val scale = context.resources.displayMetrics.density
         return (this * scale).toInt()
     }
-
 }
