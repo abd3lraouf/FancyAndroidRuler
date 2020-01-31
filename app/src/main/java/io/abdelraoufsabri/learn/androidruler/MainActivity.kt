@@ -16,8 +16,13 @@ class MainActivity : AppCompatActivity() {
             value_text.text = myScrollingValuePicker.getReading(it).toString()
         }, 250)
 
+
+
+
         myScrollingValuePicker2.setOnScrollChangedListener({
             value_text2.text = myScrollingValuePicker2.getReading(it).toString()
         }, 250)
+
+        myScrollingValuePicker2.moveTo(150F)
     }
 }
