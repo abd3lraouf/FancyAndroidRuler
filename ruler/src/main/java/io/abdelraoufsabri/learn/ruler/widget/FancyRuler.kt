@@ -4,6 +4,8 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.drawable.GradientDrawable
+import android.os.Bundle
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.Log
 import android.view.Gravity
@@ -24,6 +26,7 @@ import kotlin.math.roundToInt
 
 
 class FancyRuler : LinearLayout {
+    var value: Float = 0F
 
     private var multiplier = 0
 
@@ -238,7 +241,7 @@ class FancyRuler : LinearLayout {
         item.background = gradientDrawable
     }
 
-    private fun customPosition() = ((defaultPosition - rulerMinValue) * step * multiplier) + step
+    private fun customPosition(newPosition: Float = defaultPosition) = ((newPosition - rulerMinValue) * step * multiplier) + step
 
     private fun startPosition() = step.toFloat()
 
@@ -338,7 +341,24 @@ class FancyRuler : LinearLayout {
             overScrolled(value) -> scrollTo(endPosition())
             else -> scrollTo(correctedMark.toFloat())
         }
+        this.value = value
         return value
+    }
+
+    override fun onSaveInstanceState(): Parcelable? {
+        val bundle = Bundle()
+        bundle.putParcelable("SUPER_STATE", super.onSaveInstanceState())
+        bundle.putFloat("value", value)
+        return bundle
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        if (state is Bundle) {
+            value = state.getFloat("value")
+            moveTo(value)
+            return super.onRestoreInstanceState(state.getParcelable<Parcelable>("SUPER_STATE"))
+        }
+        return super.onRestoreInstanceState(state)
     }
 
     private fun approachesNextStep(xValue: Int) = xValue % step > (step * .5)
@@ -346,5 +366,9 @@ class FancyRuler : LinearLayout {
     private fun Float.dpAsPixels(): Int {
         val scale = context.resources.displayMetrics.density
         return (this * scale).toInt()
+    }
+
+    fun moveTo(newPosition: Float) {
+        scrollTo(customPosition(newPosition))
     }
 }
