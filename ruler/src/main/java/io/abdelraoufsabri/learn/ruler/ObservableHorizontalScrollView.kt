@@ -46,11 +46,11 @@ class ObservableHorizontalScrollView : HorizontalScrollView {
     }
 
     override fun getRightFadingEdgeStrength(): Float {
-        return 0F
+        return  if (isRtl()) 2F else 0F
     }
 
     override fun getLeftFadingEdgeStrength(): Float {
-        return 2F
+        return  if (isRtl()) 0F else 2F
     }
 
     private var disposable: Disposable? = null

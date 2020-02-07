@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import io.abdelraoufsabri.learn.ruler.ObservableHorizontalScrollView
 import io.abdelraoufsabri.learn.ruler.R
+import io.abdelraoufsabri.learn.ruler.isRtl
 import kotlinx.android.synthetic.main.units.view.*
 import java.util.*
 import kotlin.math.abs
@@ -369,7 +370,6 @@ class FancyRuler : LinearLayout {
         return value
     }
 
-    private fun isRtl() = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_RTL
 
     override fun onSaveInstanceState(): Parcelable? {
         val bundle = Bundle()
