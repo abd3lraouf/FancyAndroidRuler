@@ -6,6 +6,7 @@ import android.content.res.TypedArray
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Parcelable
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.Log
 import android.view.Gravity
@@ -19,9 +20,12 @@ import androidx.annotation.ColorRes
 import androidx.annotation.StyleableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import io.abdelraoufsabri.learn.ruler.ObservableHorizontalScrollView
 import io.abdelraoufsabri.learn.ruler.R
 import kotlinx.android.synthetic.main.units.view.*
+import java.util.*
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 
@@ -153,7 +157,7 @@ class FancyRuler : LinearLayout {
 
         val layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 45F.dpAsPixels())
         layoutParams.gravity = Gravity.CENTER_HORIZONTAL.and(Gravity.TOP)
-        layoutParams.setMargins(0, 3F.dpAsPixels(), 0, 3F.dpAsPixels())
+        layoutParams.setMargins(0, 2F.dpAsPixels(), 0, 2F.dpAsPixels())
 
         mScrollView.layoutParams = layoutParams
         orientation = VERTICAL
@@ -194,6 +198,14 @@ class FancyRuler : LinearLayout {
             view.quarterUnit.setTextColor(quarterUnitTextColor)
             view.threeQuartersUnit.setTextColor(threeQuartersUnitTextColor)
 
+            val value = (i * rulerSystem) + rulerMinValue
+
+            view.mainUnit.text = String.format("%d", value)
+            view.middleUnit.text = String.format("%d", 5)
+
+            view.setBackgroundColor(rulerBackgroundColor)
+
+
             if (rulerSystem != METRIC_SYSTEM) { // imperial
 
                 view.bar4.visibility = View.GONE
@@ -204,16 +216,16 @@ class FancyRuler : LinearLayout {
                 view.threeQuartersBar.layoutParams.height =
                     resources.getDimension(R.dimen.quarter_bar_height).toInt()
 
-                view.middleUnit.text = "1/2"
+                if (isRtl()) {
+                    view.middleUnit.text = String.format("%d\\%d", 1, 2)
+                    view.quarterUnit.text = String.format("%d\\%d", 1, 4)
+                    view.threeQuartersUnit.text = String.format("%d\\%d", 3, 4)
+                } else
+                    view.middleUnit.text = "1/2"
                 view.quarterUnit.visibility = View.VISIBLE
                 view.threeQuartersUnit.visibility = View.VISIBLE
             }
 
-            val value = (i * rulerSystem) + rulerMinValue
-
-            view.mainUnit.text = value.toString()
-
-            view.setBackgroundColor(rulerBackgroundColor)
 
             container.addView(view)
 
@@ -265,19 +277,12 @@ class FancyRuler : LinearLayout {
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
         val cx = width / 2
-        topPointer.layout(
-            (cx - 1.75 * 2F.dpAsPixels() / 2).toInt()
-            , topPointer.top
-            , (cx + .25 * 2F.dpAsPixels() / 2).toInt()
-            , topPointer.bottom
-        )
+        val leftRtl = getLeftRtl(cx)
+        val rightRtl = getRightRtl(cx)
 
-        bottomPointer.layout(
-            (cx - 1.75 * 2F.dpAsPixels() / 2).toInt()
-            , bottomPointer.top
-            , (cx + .25 * 2F.dpAsPixels() / 2).toInt()
-            , bottomPointer.bottom
-        )
+        topPointer.layout(leftRtl, topPointer.top, rightRtl, topPointer.bottom)
+
+        bottomPointer.layout(leftRtl, bottomPointer.top, rightRtl, bottomPointer.bottom)
 
         val leftParams = mLeftSpacer.layoutParams
         leftParams.width = width / 2
@@ -287,6 +292,20 @@ class FancyRuler : LinearLayout {
         rightParams.width = width / 2
         mRightSpacer.layoutParams = rightParams
 
+    }
+
+    private fun getLeftRtl(cx: Int): Int {
+        return if (isRtl())
+            cx - 9.5F.dpAsPixels()
+        else
+            cx - 2.5F.dpAsPixels()
+    }
+
+    private fun getRightRtl(cx: Int): Int {
+        return if (isRtl())
+            cx - 6.5F.dpAsPixels()
+        else
+            cx + .5F.dpAsPixels()
     }
 
     private var listener: ObservableHorizontalScrollView.OnScrollChangedListener? = null
@@ -342,8 +361,15 @@ class FancyRuler : LinearLayout {
             else -> scrollTo(correctedMark.toFloat())
         }
         this.value = value
+
+        if (isRtl()) {
+            return abs(rulerMaxValue - value + rulerMinValue)
+        }
+
         return value
     }
+
+    private fun isRtl() = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_RTL
 
     override fun onSaveInstanceState(): Parcelable? {
         val bundle = Bundle()
