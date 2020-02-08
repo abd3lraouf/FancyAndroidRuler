@@ -1,6 +1,13 @@
 # Fancy android ruler
+## Ruler in action
 
-Simple Ruler Custom view
+This image is from one of my currently under-development apps
+### RTL Support
+
+[![Length][1]][1]
+
+### LTR Support _by default_
+[![enter image description here][2]][2]
 
 ## Usage
 **Step 1.** Add it in your root build.gradle at the end of repositories:
@@ -23,12 +30,6 @@ dependencies {
         implementation 'com.github.AbdElraoufSabri:FancyAndroidRuler:X.Y.Z'
 }
 ```
-## RTL Support
-
-[![RTL][1]][1]
-
-## LTR Support _default_
-[![LTR][2]][2]
 
 ## Usage
 ### XML
@@ -78,6 +79,17 @@ class MainActivity : AppCompatActivity() {
 }
 
 ```
+## All available themes
+### RTL Support
 
-  [1]: https://i.stack.imgur.com/nA2hK.png
-  [2]: https://i.stack.imgur.com/uGiTD.png
+[![RTL][3]][3]
+
+### LTR Support _by default_
+
+[![LTR][4]][4]
+
+
+  [1]: https://i.stack.imgur.com/sPlfr.gif
+  [2]: https://i.stack.imgur.com/TYVLr.gif
+  [3]: https://i.stack.imgur.com/nA2hK.png
+  [4]: https://i.stack.imgur.com/uGiTD.png
