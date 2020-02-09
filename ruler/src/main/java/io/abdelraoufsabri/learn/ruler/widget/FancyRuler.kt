@@ -259,12 +259,7 @@ class FancyRuler(context: Context, attr: AttributeSet) : FrameLayout(context, at
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
 
-        topPointer.layout(
-            topPointer.left - 10F.dpAsPixels() + 2F.dpAsPixels()
-            , topPointer.top
-            , topPointer.right - 10F.dpAsPixels() + 2F.dpAsPixels()
-            , topPointer.bottom
-        )
+        topPointer.layout(getLeftRtl() , topPointer.top , getRightRtl() , topPointer.bottom)
 
         val leftParams = mLeftSpacer.layoutParams
         leftParams.width = width / 2
@@ -276,18 +271,18 @@ class FancyRuler(context: Context, attr: AttributeSet) : FrameLayout(context, at
 
     }
 
-    private fun getLeftRtl(cx: Int): Int {
+    private fun getLeftRtl(): Int {
         return if (!isRtl())
-            cx - 5.75F.dpAsPixels()
+            topPointer.left -1F.dpAsPixels()
         else
-            cx - 13F.dpAsPixels()
+            topPointer.left + 10F.dpAsPixels() - 2F.dpAsPixels()
     }
 
-    private fun getRightRtl(cx: Int): Int {
+    private fun getRightRtl(): Int {
         return if (!isRtl())
-            cx + 4.25F.dpAsPixels()
+            topPointer.right -1F.dpAsPixels()
         else
-            cx + 10F.dpAsPixels()
+            topPointer.right + 10F.dpAsPixels() - 2F.dpAsPixels()
     }
 
     private var listener: ObservableHorizontalScrollView.OnScrollChangedListener? = null
