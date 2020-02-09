@@ -6,31 +6,30 @@ import android.content.res.TypedArray
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Parcelable
-import android.text.TextUtils
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import androidx.annotation.ColorRes
 import androidx.annotation.StyleableRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import io.abdelraoufsabri.learn.ruler.ObservableHorizontalScrollView
 import io.abdelraoufsabri.learn.ruler.R
 import io.abdelraoufsabri.learn.ruler.isRtl
 import kotlinx.android.synthetic.main.units.view.*
-import java.util.*
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
 
-class FancyRuler : LinearLayout {
+class FancyRuler(context: Context, attr: AttributeSet) : FrameLayout(context, attr) {
     var value: Float = 0F
 
     private var multiplier = 0
@@ -55,8 +54,9 @@ class FancyRuler : LinearLayout {
     private val MIDDLE_POSITION = -2F
     private val END_POSITION = -3F
 
-    private lateinit var styledAttributes: TypedArray
+    private var styledAttributes: TypedArray
 
+    private val rulerFadingEnabled: Boolean
     private val mainUnitBarColor: Int
     private val quarterUnitBarColor: Int
     private val middleUnitBarColor: Int
@@ -69,37 +69,15 @@ class FancyRuler : LinearLayout {
     private val rulerPointerColor: Int
     private val rulerBackgroundColor: Int
 
-
-    constructor(context: Context) : super(context) {
+    init {
         mLeftSpacer = View(context)
         mRightSpacer = View(context)
-        mScrollView = ObservableHorizontalScrollView(context)
-
-        mainUnitBarColor = ContextCompat.getColor(context, R.color.mainUnitBarColor)
-        quarterUnitBarColor = ContextCompat.getColor(context, R.color.quarterUnitBarColor)
-        middleUnitBarColor = ContextCompat.getColor(context, R.color.middleUnitBarColor)
-        threeQuartersUnitBarColor = ContextCompat.getColor(context, R.color.threeQuartersUnitBarColor)
-        mainUnitTextColor = ContextCompat.getColor(context, R.color.mainUnitTextColor)
-        quarterUnitTextColor = ContextCompat.getColor(context, R.color.quarterUnitTextColor)
-        middleUnitTextColor = ContextCompat.getColor(context, R.color.middleUnitTextColor)
-        threeQuartersUnitTextColor = ContextCompat.getColor(context, R.color.threeQuartersUnitTextColor)
-        normalUnitBarColor = ContextCompat.getColor(context, R.color.normalUnitBarColor)
-        rulerPointerColor = ContextCompat.getColor(context, R.color.rulerPointerColor)
-        rulerBackgroundColor = ContextCompat.getColor(context, R.color.rulerBackgroundColor)
-
-        rulerMaxValue = DEFAULT_RULER_MAX
-        rulerMinValue = DEFAULT_RULER_MIN
-        rulerSystem = METRIC_SYSTEM
-        defaultPosition = MIDDLE_POSITION
-        initialize()
-    }
-
-    constructor(context: Context, attr: AttributeSet) : super(context, attr) {
-        mLeftSpacer = View(context)
-        mRightSpacer = View(context)
-        mScrollView = ObservableHorizontalScrollView(context)
-
         styledAttributes = context.obtainStyledAttributes(attr, R.styleable.FancyRuler, 0, 0)
+        rulerFadingEnabled = getBooleanFromXml(R.styleable.FancyRuler_rulerFadingEnabled, true)
+
+        mScrollView = ObservableHorizontalScrollView(context, attr).apply {
+            isHorizontalFadingEdgeEnabled = rulerFadingEnabled
+        }
 
         mainUnitBarColor = getColorFromXml(context, R.styleable.FancyRuler_rulerMainUnitBarColor, R.color.mainUnitBarColor)
         quarterUnitBarColor = getColorFromXml(context, R.styleable.FancyRuler_rulerQuarterUnitBarColor, R.color.quarterUnitBarColor)
@@ -112,16 +90,14 @@ class FancyRuler : LinearLayout {
         normalUnitBarColor = getColorFromXml(context, R.styleable.FancyRuler_rulerNormalUnitBarColor, R.color.normalUnitBarColor)
         rulerPointerColor = getColorFromXml(context, R.styleable.FancyRuler_rulerPointerColor, R.color.rulerPointerColor)
         rulerBackgroundColor = getColorFromXml(context, R.styleable.FancyRuler_rulerBackgroundColor, R.color.rulerBackgroundColor)
-
         rulerMaxValue = getIntFromXml(R.styleable.FancyRuler_rulerMaxValue, DEFAULT_RULER_MAX)
         rulerMinValue = getIntFromXml(R.styleable.FancyRuler_rulerMinValue, DEFAULT_RULER_MIN)
         rulerSystem = getIntFromXml(R.styleable.FancyRuler_rulerSystem, METRIC_SYSTEM)
         defaultPosition = getFloatFromXml(R.styleable.FancyRuler_rulerDefaultPosition, MIDDLE_POSITION)
-
         styledAttributes.recycle()
-
         initialize()
     }
+
 
     private fun getFloatFromXml(@StyleableRes styledId: Int, defaultValue: Float): Float {
         return if (styledAttributes.hasValue(styledId)) {
@@ -137,6 +113,13 @@ class FancyRuler : LinearLayout {
             defaultValue
     }
 
+    private fun getBooleanFromXml(@StyleableRes styledId: Int, defaultValue: Boolean): Boolean {
+        return if (styledAttributes.hasValue(styledId)) {
+            styledAttributes.getBoolean(styledId, defaultValue)
+        } else
+            defaultValue
+    }
+
     private fun getColorFromXml(context: Context, @StyleableRes styledColor: Int, @ColorRes defaultColor: Int): Int {
         return if (styledAttributes.hasValue(styledColor)) {
             styledAttributes.getColor(
@@ -148,7 +131,6 @@ class FancyRuler : LinearLayout {
     }
 
     private lateinit var topPointer: View
-    private lateinit var bottomPointer: View
 
 
     private fun initialize() {
@@ -161,15 +143,11 @@ class FancyRuler : LinearLayout {
         layoutParams.setMargins(0, 2F.dpAsPixels(), 0, 2F.dpAsPixels())
 
         mScrollView.layoutParams = layoutParams
-        orientation = VERTICAL
-
-        topPointer = getPointer()
-        addView(topPointer)
 
         addView(mScrollView)
 
-        bottomPointer = getPointer()
-        addView(bottomPointer)
+        topPointer = getPointer()
+        addView(topPointer)
 
         val container = LinearLayout(context)
 
@@ -265,11 +243,14 @@ class FancyRuler : LinearLayout {
 
     private fun getPointer(): View {
         val pointer = ImageView(context)
-        val shape = ContextCompat.getDrawable(context, R.drawable.pointer_line) as GradientDrawable
-        shape.mutate()
-        shape.setColor(rulerPointerColor)
-        pointer.setImageDrawable(shape)
-        val params = LayoutParams(2F.dpAsPixels(), 6F.dpAsPixels())
+
+        val unwrappedDrawable = AppCompatResources.getDrawable(context, R.drawable.pointer_line)
+        val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
+        DrawableCompat.setTint(wrappedDrawable, rulerPointerColor)
+
+        pointer.setImageDrawable(wrappedDrawable)
+
+        val params = LayoutParams(10F.dpAsPixels(), 10F.dpAsPixels())
         params.gravity = Gravity.CENTER_HORIZONTAL
         pointer.layoutParams = params
         return pointer
@@ -277,13 +258,13 @@ class FancyRuler : LinearLayout {
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-        val cx = width / 2
-        val leftRtl = getLeftRtl(cx)
-        val rightRtl = getRightRtl(cx)
 
-        topPointer.layout(leftRtl, topPointer.top, rightRtl, topPointer.bottom)
-
-        bottomPointer.layout(leftRtl, bottomPointer.top, rightRtl, bottomPointer.bottom)
+        topPointer.layout(
+            topPointer.left - 10F.dpAsPixels() + 2F.dpAsPixels()
+            , topPointer.top
+            , topPointer.right - 10F.dpAsPixels() + 2F.dpAsPixels()
+            , topPointer.bottom
+        )
 
         val leftParams = mLeftSpacer.layoutParams
         leftParams.width = width / 2
@@ -296,17 +277,17 @@ class FancyRuler : LinearLayout {
     }
 
     private fun getLeftRtl(cx: Int): Int {
-        return if (isRtl())
-            cx - 9.5F.dpAsPixels()
+        return if (!isRtl())
+            cx - 5.75F.dpAsPixels()
         else
-            cx - 2.5F.dpAsPixels()
+            cx - 13F.dpAsPixels()
     }
 
     private fun getRightRtl(cx: Int): Int {
-        return if (isRtl())
-            cx - 6.5F.dpAsPixels()
+        return if (!isRtl())
+            cx + 4.25F.dpAsPixels()
         else
-            cx + .5F.dpAsPixels()
+            cx + 10F.dpAsPixels()
     }
 
     private var listener: ObservableHorizontalScrollView.OnScrollChangedListener? = null
@@ -352,9 +333,6 @@ class FancyRuler : LinearLayout {
         val correctedMark = (nearestMark * step) + step
 
         val value = nearestMark / multiplier * 1F + rulerMinValue
-
-        Log.e("ManoO nearestMark", nearestMark.toString())
-        Log.e("ManoO xValue", xValue.toString())
 
         when {
             underScrolled(value) -> scrollTo(startPosition())
