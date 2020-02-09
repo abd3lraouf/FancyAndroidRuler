@@ -16,10 +16,7 @@ import java.util.concurrent.TimeUnit
  * A [HorizontalScrollView] with an [OnScrollChangedListener] interface
  * to notify listeners of scroll position changes.
  */
-class ObservableHorizontalScrollView : HorizontalScrollView {
-
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attr: AttributeSet) : super(context, attr)
+class ObservableHorizontalScrollView(context: Context, attr: AttributeSet) : HorizontalScrollView(context, attr) {
 
     private var mOnScrollChangedListener: OnScrollChangedListener? = null
 
@@ -42,7 +39,6 @@ class ObservableHorizontalScrollView : HorizontalScrollView {
         super.onWindowFocusChanged(hasFocus)
         val fadingLength = (measuredWidth * 0.5F).toInt()
         setFadingEdgeLength(fadingLength)
-        isHorizontalFadingEdgeEnabled = true
     }
 
     override fun getRightFadingEdgeStrength(): Float {

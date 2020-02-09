@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="FancyRuler">
 
+        <attr name="rulerFadingEnabled" format="boolean" />
         <attr name="rulerMainUnitBarColor" format="color" />
         <attr name="rulerMainUnitTextColor" format="color" />
         <attr name="rulerMiddleUnitBarColor" format="color" />

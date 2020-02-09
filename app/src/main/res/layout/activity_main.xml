@@ -35,6 +35,7 @@
         app:rulerMainUnitBarColor="#4CAF50"
         app:rulerMainUnitTextColor="#4CAF50"
         app:rulerBackgroundColor="#000"
+        app:rulerFadingEnabled="false"
         />
 
     <TextView
