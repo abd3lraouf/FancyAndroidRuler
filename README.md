@@ -1,5 +1,5 @@
 # Fancy android ruler
-[![HitCount](http://hits.dwyl.com/AbdElraoufSabri/FancyAndroidRuler.svg)](http://hits.dwyl.com/AbdElraoufSabri/FancyAndroidRuler) [![](https://jitpack.io/v/AbdElraoufSabri/FancyAndroidRuler.svg)](https://jitpack.io/#AbdElraoufSabri/FancyAndroidRuler)
+[![HitCount](http://hits.dwyl.com/AbdElraoufSabri/FancyAndroidRuler.svg)](http://hits.dwyl.com/AbdElraoufSabri/FancyAndroidRuler)  [![](https://jitpack.io/v/AbdElraoufSabri/FancyAndroidRuler.svg)](https://jitpack.io/#AbdElraoufSabri/FancyAndroidRuler) [![API](https://img.shields.io/badge/API-19%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=19)  [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
 
 ## Ruler in action
 
@@ -23,14 +23,14 @@ allprojects {
 }
 ```
 
-**Step 2.** Add the dependency
+**Step 2.** Add the dependency: Latest version: [![](https://jitpack.io/v/AbdElraoufSabri/FancyAndroidRuler.svg)](https://jitpack.io/#AbdElraoufSabri/FancyAndroidRuler)
 
 ```groovy
 dependencies {
-        implementation 'com.github.AbdElraoufSabri:FancyAndroidRuler:X.Y.Z'
+        implementation 'com.github.AbdElraoufSabri:FancyAndroidRuler:<VERSION>'
 }
 ```
-**Note**: Replace X,Y,Z with Latest version from **jitpack** 
+
 ## Usage
 ### XML
 ```xml
