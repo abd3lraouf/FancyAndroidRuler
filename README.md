@@ -24,6 +24,7 @@ allprojects {
 ```
 
 **Step 2.** Add the dependency:
+
 ![Release](https://img.shields.io/nexus/r/dev.abd3lraouf.ruler/android?label=latest%20release&server=https%3A%2F%2Fs01.oss.sonatype.org)
 ![Snapshot](https://img.shields.io/nexus/s/dev.abd3lraouf.ruler/android?label=latest%20snapshot&server=https%3A%2F%2Fs01.oss.sonatype.org)
 
