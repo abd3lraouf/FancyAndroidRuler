@@ -1,16 +1,15 @@
-package io.abdelraoufsabri.learn.ruler
+package dev.abd3lraouf.custom.ruler
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.HorizontalScrollView
-import io.abdelraoufsabri.learn.ruler.ObservableHorizontalScrollView.OnScrollChangedListener
+import dev.abd3lraouf.custom.ruler.ObservableHorizontalScrollView.OnScrollChangedListener
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.security.InvalidParameterException
 import java.util.concurrent.TimeUnit
-
 
 /**
  * A [HorizontalScrollView] with an [OnScrollChangedListener] interface
@@ -42,11 +41,11 @@ class ObservableHorizontalScrollView(context: Context, attr: AttributeSet) : Hor
     }
 
     override fun getRightFadingEdgeStrength(): Float {
-        return  if (isRtl()) 2F else 0F
+        return if (isRtl()) 2F else 0F
     }
 
     override fun getLeftFadingEdgeStrength(): Float {
-        return  if (isRtl()) 0F else 2F
+        return if (isRtl()) 0F else 2F
     }
 
     private var disposable: Disposable? = null

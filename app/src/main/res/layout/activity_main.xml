@@ -16,7 +16,7 @@
         android:textSize="32sp"
         tools:text="1" />
 
-    <io.abdelraoufsabri.learn.ruler.widget.FancyRuler
+    <dev.abd3lraouf.custom.ruler.FancyRuler
         android:id="@+id/myScrollingValuePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
         android:textSize="32sp"
         tools:text="1" />
 
-    <io.abdelraoufsabri.learn.ruler.widget.FancyRuler
+    <dev.abd3lraouf.custom.ruler.FancyRuler
         android:id="@+id/myScrollingValuePicker2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

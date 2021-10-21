@@ -1,4 +1,4 @@
-package io.abdelraoufsabri.learn.ruler.widget
+package dev.abd3lraouf.custom.ruler
 
 import android.animation.ObjectAnimator
 import android.content.Context
@@ -18,24 +18,19 @@ import android.widget.ScrollView
 import androidx.annotation.ColorRes
 import androidx.annotation.StyleableRes
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import io.abdelraoufsabri.learn.ruler.ObservableHorizontalScrollView
-import io.abdelraoufsabri.learn.ruler.R
-import io.abdelraoufsabri.learn.ruler.isRtl
-import kotlinx.android.synthetic.main.units.view.*
+import dev.abd3lraouf.custom.ruler.databinding.UnitsBinding
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-
 class FancyRuler(context: Context, attr: AttributeSet) : FrameLayout(context, attr) {
-    var value: Float = 0F
+    private var value: Float = 0F
 
     private var multiplier = 0
 
-    private val mLeftSpacer: View
-    private val mRightSpacer: View
+    private val mLeftSpacer: View = View(context)
+    private val mRightSpacer: View = View(context)
     private val mScrollView: ObservableHorizontalScrollView
 
     private val rulerMaxValue: Int
@@ -45,16 +40,7 @@ class FancyRuler(context: Context, attr: AttributeSet) : FrameLayout(context, at
     private val defaultPosition: Float
     private val step by lazy { 16F.dpAsPixels() }
 
-    private val METRIC_SYSTEM = 10
-
-    private val DEFAULT_RULER_MAX = 100
-    private val DEFAULT_RULER_MIN = 0
-
-    private val START_POSITION = -1F
-    private val MIDDLE_POSITION = -2F
-    private val END_POSITION = -3F
-
-    private var styledAttributes: TypedArray
+    private var styledAttributes: TypedArray = context.obtainStyledAttributes(attr, R.styleable.FancyRuler, 0, 0)
 
     private val rulerFadingEnabled: Boolean
     private val mainUnitBarColor: Int
@@ -70,9 +56,6 @@ class FancyRuler(context: Context, attr: AttributeSet) : FrameLayout(context, at
     private val rulerBackgroundColor: Int
 
     init {
-        mLeftSpacer = View(context)
-        mRightSpacer = View(context)
-        styledAttributes = context.obtainStyledAttributes(attr, R.styleable.FancyRuler, 0, 0)
         rulerFadingEnabled = getBooleanFromXml(R.styleable.FancyRuler_rulerFadingEnabled, true)
 
         mScrollView = ObservableHorizontalScrollView(context, attr).apply {
@@ -97,7 +80,6 @@ class FancyRuler(context: Context, attr: AttributeSet) : FrameLayout(context, at
         styledAttributes.recycle()
         initialize()
     }
-
 
     private fun getFloatFromXml(@StyleableRes styledId: Int, defaultValue: Float): Float {
         return if (styledAttributes.hasValue(styledId)) {
@@ -132,7 +114,6 @@ class FancyRuler(context: Context, attr: AttributeSet) : FrameLayout(context, at
 
     private lateinit var topPointer: View
 
-
     private fun initialize() {
 
         mScrollView.isHorizontalScrollBarEnabled = false
@@ -157,59 +138,55 @@ class FancyRuler(context: Context, attr: AttributeSet) : FrameLayout(context, at
 
         for (i in 0..rulerMaxValue) {
 
-            val view =
-                LayoutInflater.from(context).inflate(R.layout.units, null) as ConstraintLayout
+            val binding = UnitsBinding.inflate(LayoutInflater.from(context), null, false)
+            changeViewColor(binding.mainUnitBar, mainUnitBarColor)
+            changeViewColor(binding.middleBar, middleUnitBarColor)
+            changeViewColor(binding.quarterUnitBar, quarterUnitBarColor)
+            changeViewColor(binding.threeQuartersBar, threeQuartersUnitBarColor)
 
-            changeViewColor(view.mainUnitBar, mainUnitBarColor)
-            changeViewColor(view.middleBar, middleUnitBarColor)
-            changeViewColor(view.quarterUnitBar, quarterUnitBarColor)
-            changeViewColor(view.threeQuartersBar, threeQuartersUnitBarColor)
+            changeViewColor(binding.bar1, normalUnitBarColor)
+            changeViewColor(binding.bar3, normalUnitBarColor)
+            changeViewColor(binding.bar4, normalUnitBarColor)
+            changeViewColor(binding.bar6, normalUnitBarColor)
+            changeViewColor(binding.bar8, normalUnitBarColor)
+            changeViewColor(binding.bar9, normalUnitBarColor)
 
-            changeViewColor(view.bar1, normalUnitBarColor)
-            changeViewColor(view.bar3, normalUnitBarColor)
-            changeViewColor(view.bar4, normalUnitBarColor)
-            changeViewColor(view.bar6, normalUnitBarColor)
-            changeViewColor(view.bar8, normalUnitBarColor)
-            changeViewColor(view.bar9, normalUnitBarColor)
-
-            view.mainUnit.setTextColor(mainUnitTextColor)
-            view.middleUnit.setTextColor(middleUnitTextColor)
-            view.quarterUnit.setTextColor(quarterUnitTextColor)
-            view.threeQuartersUnit.setTextColor(threeQuartersUnitTextColor)
+            binding.mainUnit.setTextColor(mainUnitTextColor)
+            binding.middleUnit.setTextColor(middleUnitTextColor)
+            binding.quarterUnit.setTextColor(quarterUnitTextColor)
+            binding.threeQuartersUnit.setTextColor(threeQuartersUnitTextColor)
 
             val value = (i * rulerSystem) + rulerMinValue
 
-            view.mainUnit.text = String.format("%d", value)
-            view.middleUnit.text = String.format("%d", 5)
+            binding.mainUnit.text = String.format("%d", value)
+            binding.middleUnit.text = String.format("%d", 5)
 
-            view.setBackgroundColor(rulerBackgroundColor)
-
+            binding.root.setBackgroundColor(rulerBackgroundColor)
 
             if (rulerSystem != METRIC_SYSTEM) { // imperial
 
-                view.bar4.visibility = View.GONE
-                view.bar8.visibility = View.GONE
-                view.quarterUnitBar.layoutParams.height =
+                binding.bar4.visibility = View.GONE
+                binding.bar8.visibility = View.GONE
+                binding.quarterUnitBar.layoutParams.height =
                     resources.getDimension(R.dimen.quarter_bar_height).toInt()
 
-                view.threeQuartersBar.layoutParams.height =
+                binding.threeQuartersBar.layoutParams.height =
                     resources.getDimension(R.dimen.quarter_bar_height).toInt()
 
                 if (isRtl()) {
-                    view.middleUnit.text = String.format("%d\\%d", 1, 2)
-                    view.quarterUnit.text = String.format("%d\\%d", 1, 4)
-                    view.threeQuartersUnit.text = String.format("%d\\%d", 3, 4)
+                    binding.middleUnit.text = String.format("%d\\%d", 1, 2)
+                    binding.quarterUnit.text = String.format("%d\\%d", 1, 4)
+                    binding.threeQuartersUnit.text = String.format("%d\\%d", 3, 4)
                 } else
-                    view.middleUnit.text = "1/2"
-                view.quarterUnit.visibility = View.VISIBLE
-                view.threeQuartersUnit.visibility = View.VISIBLE
+                    binding.middleUnit.text = "1/2"
+                binding.quarterUnit.visibility = View.VISIBLE
+                binding.threeQuartersUnit.visibility = View.VISIBLE
             }
 
-
-            container.addView(view)
+            container.addView(binding.root)
 
             if (value >= rulerMaxValue) {
-                view.removeViews(2, view.childCount - 2)
+                binding.root.removeViews(2, binding.root.childCount - 2)
                 break
             }
         }
@@ -259,7 +236,7 @@ class FancyRuler(context: Context, attr: AttributeSet) : FrameLayout(context, at
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
 
-        topPointer.layout(getLeftRtl() , topPointer.top , getRightRtl() , topPointer.bottom)
+        topPointer.layout(getLeftRtl(), topPointer.top, getRightRtl(), topPointer.bottom)
 
         val leftParams = mLeftSpacer.layoutParams
         leftParams.width = width / 2
@@ -268,19 +245,18 @@ class FancyRuler(context: Context, attr: AttributeSet) : FrameLayout(context, at
         val rightParams = mRightSpacer.layoutParams
         rightParams.width = width / 2
         mRightSpacer.layoutParams = rightParams
-
     }
 
     private fun getLeftRtl(): Int {
         return if (!isRtl())
-            topPointer.left -1F.dpAsPixels()
+            topPointer.left - 1F.dpAsPixels()
         else
             topPointer.left + 10F.dpAsPixels() - 2F.dpAsPixels()
     }
 
     private fun getRightRtl(): Int {
         return if (!isRtl())
-            topPointer.right -1F.dpAsPixels()
+            topPointer.right - 1F.dpAsPixels()
         else
             topPointer.right + 10F.dpAsPixels() - 2F.dpAsPixels()
     }
@@ -308,16 +284,14 @@ class FancyRuler(context: Context, attr: AttributeSet) : FrameLayout(context, at
     private fun scrollTo(x: Float) {
         mScrollView.removeCallbacks(runnable)
         runnable = Runnable {
-            ObjectAnimator.ofInt(mScrollView, "scrollX", x.roundToInt()).setDuration(1).start();
+            ObjectAnimator.ofInt(mScrollView, "scrollX", x.roundToInt()).setDuration(1).start()
         }
         mScrollView.post(runnable)
     }
 
     private fun overScrolled(value: Float) = value > rulerMaxValue
 
-
     private fun underScrolled(value: Float) = value < rulerMinValue
-
 
     fun getReading(xValue: Int): Float {
         val nearestMark = when {
@@ -342,7 +316,6 @@ class FancyRuler(context: Context, attr: AttributeSet) : FrameLayout(context, at
 
         return value
     }
-
 
     override fun onSaveInstanceState(): Parcelable? {
         val bundle = Bundle()
@@ -369,5 +342,16 @@ class FancyRuler(context: Context, attr: AttributeSet) : FrameLayout(context, at
 
     fun moveTo(newPosition: Float) {
         scrollTo(customPosition(newPosition))
+    }
+
+    companion object {
+        private const val METRIC_SYSTEM = 10
+
+        private const val DEFAULT_RULER_MAX = 100
+        private const val DEFAULT_RULER_MIN = 0
+
+        private const val START_POSITION = -1F
+        private const val MIDDLE_POSITION = -2F
+        private const val END_POSITION = -3F
     }
 }

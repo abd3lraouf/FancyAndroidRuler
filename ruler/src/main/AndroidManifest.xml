@@ -1,2 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.abdelraoufsabri.learn.ruler" />
+<manifest package="dev.abd3lraouf.custom.ruler" />
