@@ -301,7 +301,7 @@ class FancyRuler(context: Context, attr: AttributeSet) : FrameLayout(context, at
 
         val correctedMark = (nearestMark * step) + step
 
-        val value = nearestMark / multiplier * 1F + rulerMinValue
+        val value = nearestMark * 1F / multiplier * 1F + rulerMinValue
 
         when {
             underScrolled(value) -> scrollTo(startPosition())
