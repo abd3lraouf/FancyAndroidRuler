@@ -1,5 +1,5 @@
 # Fancy android ruler
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fgjbae1212%2Fhit-counter&count_bg=%2379C83D&title_bg=%23555555&icon=googlefit.svg&icon_color=%23F3A2A2&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)  [![](https://jitpack.io/v/AbdElraoufSabri/FancyAndroidRuler.svg)](https://jitpack.io/#AbdElraoufSabri/FancyAndroidRuler) [![API](https://img.shields.io/badge/API-19%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=19)  [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FAbdElraoufSabri%2FFancyAndroidRuler&count_bg=%2379C83D&title_bg=%23555555&icon=googlefit.svg&icon_color=%23F3A2A2&title=hits&edge_flat=false)](https://github.com/AbdElraoufSabri/FancyAndroidRuler) [![API](https://img.shields.io/badge/API-19%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=19)  [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
 
 ## Ruler in action
 
@@ -18,16 +18,18 @@ This image is from one of my currently under-development apps
 allprojects {
     repositories {
         //...
-        maven { url 'https://jitpack.io' }
+        mavenCentral()
     }
 }
 ```
 
-**Step 2.** Add the dependency: Latest version: [![](https://jitpack.io/v/AbdElraoufSabri/FancyAndroidRuler.svg)](https://jitpack.io/#AbdElraoufSabri/FancyAndroidRuler)
+**Step 2.** Add the dependency:
+![Release](https://img.shields.io/nexus/r/dev.abd3lraouf.ruler/android?label=latest%20release&server=https%3A%2F%2Fs01.oss.sonatype.org)
+![Snapshot](https://img.shields.io/nexus/s/dev.abd3lraouf.ruler/android?label=latest%20snapshot&server=https%3A%2F%2Fs01.oss.sonatype.org)
 
 ```groovy
 dependencies {
-        implementation 'com.github.AbdElraoufSabri:FancyAndroidRuler:<VERSION>'
+        implementation 'abd3lraouf.dev.ruler:android:<VERSION>'
 }
 ```
 
