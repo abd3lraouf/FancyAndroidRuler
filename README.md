@@ -1,5 +1,5 @@
 # Fancy android ruler
-[![HitCount](http://hits.dwyl.com/AbdElraoufSabri/FancyAndroidRuler.svg)](http://hits.dwyl.com/AbdElraoufSabri/FancyAndroidRuler)  [![](https://jitpack.io/v/AbdElraoufSabri/FancyAndroidRuler.svg)](https://jitpack.io/#AbdElraoufSabri/FancyAndroidRuler) [![API](https://img.shields.io/badge/API-19%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=19)  [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fgjbae1212%2Fhit-counter&count_bg=%2379C83D&title_bg=%23555555&icon=googlefit.svg&icon_color=%23F3A2A2&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)  [![](https://jitpack.io/v/AbdElraoufSabri/FancyAndroidRuler.svg)](https://jitpack.io/#AbdElraoufSabri/FancyAndroidRuler) [![API](https://img.shields.io/badge/API-19%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=19)  [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
 
 ## Ruler in action
 
@@ -42,7 +42,7 @@ dependencies {
         android:textSize="32sp"
         tools:text="1" />
 
-    <io.abdelraoufsabri.learn.ruler.widget.FancyRuler
+    <dev.abd3lraouf.custom.ruler.FancyRuler
         android:id="@+id/myScrollingValuePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
